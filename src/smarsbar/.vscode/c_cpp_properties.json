@@ -1,0 +1,32 @@
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            "includePath": [
+                "${workspaceRoot}/",
+                "C:/Users/Tennessee/AppData/Local/Arduino15/packages/adafruit/hardware/samd/1.0.21/",
+                "C:/Users/Tennessee/AppData/Local/Arduino15/packages/adafruit/hardware/samd/1.0.21/cores/arduino/",
+                "C:/Users/Tennessee/AppData/Local/Arduino15/packages/arduino/tools/CMSIS-Atmel/1.1.0/CMSIS/Device/ATMEL",
+                "C:/Users/Tennessee/AppData/Local/Arduino15/packages/arduino/tools/arm-none-eabi-gcc/4.8.3-2014q1/lib/gcc/arm-none-eabi/4.8.3/include",
+                "C:/Users/Tennessee/AppData/Local/Arduino15/packages/arduino/tools/arm-none-eabi-gcc/4.8.3-2014q1/arm-none-eabi/include",
+                "C:/Users/Tennessee/AppData/Local/Arduino15/packages/",
+                "C:/Users/Tennessee/Documents/Arduino/libraries/"
+            ],
+            "browse": {
+                "limitSymbolsToIncludedHeaders": false,
+                "path": [
+                    "${workspaceRoot}/",
+                    "C:/Users/Tennessee/AppData/Local/Arduino15/packages/adafruit/hardware/samd/1.0.21/",
+                    "C:/Users/Tennessee/AppData/Local/Arduino15/packages/adafruit/hardware/samd/1.0.21/cores/arduino/",
+                    "C:/Users/Tennessee/AppData/Local/Arduino15/packages/arduino/tools/CMSIS-Atmel/1.1.0/CMSIS/Device/ATMEL",
+                    "C:/Users/Tennessee/AppData/Local/Arduino15/packages/arduino/tools/arm-none-eabi-gcc/4.8.3-2014q1/lib/gcc/arm-none-eabi/4.8.3/include",
+                    "C:/Users/Tennessee/AppData/Local/Arduino15/packages/arduino/tools/arm-none-eabi-gcc/4.8.3-2014q1/arm-none-eabi/include",
+                    "C:/Users/Tennessee/AppData/Local/Arduino15/packages/",
+                    "C:/Users/Tennessee/Documents/Arduino/libraries/"
+                ]
+            },
+            "intelliSenseMode": "msvc-x64"
+        }
+    ],
+    "version": 3
+}
