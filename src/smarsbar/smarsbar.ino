@@ -69,7 +69,7 @@ static UnipolarSequencer _left_seq(BOARD_MOTOR2_PH_A, BOARD_MOTOR2_PH_B,
                                  &_left_freq_setter);
 
 static LineFollowerController _controller(_left_seq, _right_seq, LEFT_IR_SENSOR, RIGHT_IR_SENSOR,
-                              10 * 1000, SCHED_PERIOD_MILLIS * 1000UL);
+                              500, SCHED_PERIOD_MILLIS * 1000UL);
 
 // Left sequencer pulse timing
 static void Timer3Callback0(struct tc_module *const module_inst) {
