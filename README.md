@@ -28,23 +28,24 @@ No other parts are needed, you just need to hook it all up. Schematic to be prov
 
 ## Pinouts for SMARS
 
-TODO: WIRE COLORS
-
 | Feather pin | Name in code | Function |
 | ----------- | ---- | -------- |
-| 16 | BOARD_MOTOR1_PH_A | Right motor phase A |
-| 19 | BOARD_MOTOR1_PH_B | Right motor phase B |
-| 24 | BOARD_MOTOR1_PH_C | Right motor phase C |
-| 23 | BOARD_MOTOR1_PH_D | Right motor phase D |
-| 12 | BOARD_MOTOR2_PH_A | Left motor phase A |
-| 11 | BOARD_MOTOR2_PH_B | Left motor phase B |
-| 10 | BOARD_MOTOR2_PH_C | Left motor phase C |
-| 9  | BOARD_MOTOR2_PH_D | Left motor phase D |
+| 16 | BOARD_MOTOR1_PH_A | Right motor phase A (BLUE) |
+| 19 | BOARD_MOTOR1_PH_B | Right motor phase B (PINK) |
+| 24 | BOARD_MOTOR1_PH_C | Right motor phase C (YELLOW) |
+| 23 | BOARD_MOTOR1_PH_D | Right motor phase D (ORANGE) |
+| 12 | BOARD_MOTOR2_PH_A | Left motor phase A (BLUE) |
+| 11 | BOARD_MOTOR2_PH_B | Left motor phase B (PINK) |
+| 10 | BOARD_MOTOR2_PH_C | Left motor phase C (YELLOW) |
+| 9  | BOARD_MOTOR2_PH_D | Left motor phase D (ORANGE) |
 | 13 | BOARD_LED         | LED for debug      |
 | A0 | BOARD_IR_CH1      | Left IR sensor     |
 | A1 | BOARD_IR_CH2      | Right IR sensor    |
 | 21 | BOARD_I2C_SCL     | I2C expansion SCL (future use) |
 | 20 | BOARD_I2C_SDA     | I2C expansion SDA (future use) |
+| +5V | ------------ | Connect to COM of motors (RED) and VCC of drivers. |
+
+NOTE: The Adafruit Feather M0 uses 3.3V logic. This is OK to drive the ULN2003A and DS3658 (and most other open collector/open drain stepper drivers). The main supply should be 5V to the chip though.
 
 ## Building the code
 

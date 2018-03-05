@@ -6,7 +6,7 @@
  * @author Tennessee Carmel-Veilleux <tcv -at- ro.boto.ca>
  * @copyright 2018 Tennessee Carmel-Veilleux
  *
- * SEE LICENSE FILE
+ * MIT License. See LICENSE FILE
  */
 
 #if defined(ARDUINO_SAMD_ZERO) && defined(SERIAL_PORT_USBVIRTUAL)
@@ -14,26 +14,27 @@
   #define Serial SERIAL_PORT_USBVIRTUAL
 #endif
 
+#include <Adafruit_ZeroTimer.h>
+#include "board_config.h"
+#include <UnipolarSequencer.hpp>
+#include "LineFollowerController.hpp"
+
 #define LEFT_IR_SENSOR BOARD_IR_CH1
 #define RIGHT_IR_SENSOR BOARD_IR_CH2
 #define ZERO_TIMER_CLOCK (48UL * 1000UL * 1000UL)
 #define ZERO_TIMER_PRESCALER (64UL)
 #define STEPPER_MAX_SPEED_PPS (500U)
 #define SCHED_PERIOD_MILLIS (50U)
+#define CORRECTION_FACTOR (500U)
 
-#include <Adafruit_ZeroTimer.h>
-#include "board_config.h"
-#include <UnipolarSequencer.hpp>
-#include "LineFollowerController.hpp"
-
-static bool _led_state = false;
-
+/** Last time tick in ms when scheduler hit */
 static uint32_t _last_sched_tick_ms = 0;
 
+/** Timer drivers for left/right stepper pulse sequencing */
 Adafruit_ZeroTimer _left_timer = Adafruit_ZeroTimer(3);
 Adafruit_ZeroTimer _right_timer = Adafruit_ZeroTimer(5);
-//Adafruit_ZeroTimer _sched_timer = Adafruit_ZeroTimer(5);
 
+/** Common callback to set a pulse frequency against a timer driver */
 static void _freq_setter(Adafruit_ZeroTimer& timer, uint16_t freq) {
     if (0 == freq) { 
         freq = 1;
@@ -68,15 +69,16 @@ static UnipolarSequencer _left_seq(BOARD_MOTOR2_PH_A, BOARD_MOTOR2_PH_B,
                                  STEPPER_MAX_SPEED_PPS, SCHED_PERIOD_MILLIS * 1000UL,
                                  &_left_freq_setter);
 
+/** Instance of the line following control logic */
 static LineFollowerController _controller(_left_seq, _right_seq, LEFT_IR_SENSOR, RIGHT_IR_SENSOR,
-                              500, SCHED_PERIOD_MILLIS * 1000UL);
+                              CORRECTION_FACTOR, SCHED_PERIOD_MILLIS * 1000UL);
 
-// Left sequencer pulse timing
+/** Left sequencer pulse timing */
 static void Timer3Callback0(struct tc_module *const module_inst) {
     _left_seq.kick_pulse();
 }
 
-// Right sequencer pulse timing
+/** Right sequencer pulse timing */
 static void Timer5Callback0(struct tc_module *const module_inst) {
     _right_seq.kick_pulse();
 }
@@ -101,7 +103,6 @@ static void setupTimers(void) {
     _right_timer.enable(true);
 }
 
-// the setup function runs once when you press reset or power the board
 void setup() {
     setup_board();
     Serial.begin(115200);
@@ -113,11 +114,11 @@ void setup() {
 }
 
 static uint32_t ticks_delta(uint32_t old_ticks, uint32_t new_ticks) {
+    // FIXME: Handle wraparound. OK for now, can run for 4million+ seconds :)
     return (new_ticks - old_ticks);
 }
 
 static bool _did_sched_tick_hit(void) {
-    // FIXME: Handle wraparound
     uint32_t new_ticks = millis();
 
     if (ticks_delta(_last_sched_tick_ms, new_ticks) >= SCHED_PERIOD_MILLIS) {
@@ -128,17 +129,13 @@ static bool _did_sched_tick_hit(void) {
     }
 }
 
-#define THRESH 700
-
 static void _handle_scheduler_tick(void) {
     _controller.schedulerKick();
     _left_seq.kick_sched();
     _right_seq.kick_sched();
 }
 
-// the loop function runs over and over again forever
 void loop() {
-    _led_state = !_led_state;
     digitalWrite(BOARD_LED, HIGH);
 
     if (_did_sched_tick_hit()) {
